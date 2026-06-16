@@ -45,6 +45,13 @@ class FdhConfig:
     token_user: str
     token_password_hash: str
     
+@dataclass(frozen=True)
+class CancerLinkConfig:
+    patient_url: str
+    service_url: str
+    hospital_key: str
+    secret_header_name: str
+    secret_header_value: str
 
 def get_database_config() -> DatabaseConfig:
     return DatabaseConfig(
@@ -84,4 +91,13 @@ def get_fdh_config() -> FdhConfig:
         token_hospital_code=os.getenv("FDH_TOKEN_HOSPITAL_CODE", "10661"),
         token_user=os.getenv("FDH_TOKEN_USER", ""),
         token_password_hash=os.getenv("FDH_TOKEN_PASSWORD_HASH", ""),
+    )
+    
+def get_cancer_link_config() -> CancerLinkConfig:
+    return CancerLinkConfig(
+        patient_url=os.getenv("CANCER_LINK_PATIENT_URL", ""),
+        service_url=os.getenv("CANCER_LINK_SERVICE_URL", ""),
+        hospital_key=os.getenv("CANCER_LINK_HOSPITAL_KEY", ""),
+        secret_header_name=os.getenv("CANCER_LINK_SECRET_HEADER_NAME", ""),
+        secret_header_value=os.getenv("CANCER_LINK_SECRET_HEADER_VALUE", ""),
     )

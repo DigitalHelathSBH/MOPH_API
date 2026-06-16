@@ -7,7 +7,7 @@ import requests
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-from common.config import MophConfig, get_moph_config, get_fdh_config
+from common.config import MophConfig, get_moph_config, get_fdh_config,get_cancer_link_config
 
 
 @dataclass
@@ -143,3 +143,43 @@ class MophApiClient:
 
     def update_lab(self, payload: dict[str, Any]) -> ApiResult:
         return self.post_json(self.config.update_lab_url, payload)
+
+    def send_cancer_link_service(self, payload: list[dict[str, Any]]) -> ApiResult:
+        return self.post_cancer_link_json(get_cancer_link_config().service_url, payload)
+    
+    def send_cancer_link_patient(self, payload: list[dict[str, Any]]) -> ApiResult:
+        config = get_cancer_link_config()
+        
+
+        headers = {
+            "Content-Type": "application/json; charset=UTF-8",
+            "Accept": "application/json",
+            "hospitalKey": config.hospital_key,
+            config.secret_header_name: config.secret_header_value,
+        }
+
+        try:
+            response = requests.post(
+                config.patient_url,
+                json=payload,
+                headers=headers,
+                timeout=self.timeout,
+                verify=self.verify_ssl,
+            )
+
+            try:
+                data = response.json()
+            except ValueError:
+                data = None
+
+            return ApiResult(
+                ok=response.ok,
+                status_code=response.status_code,
+                data=data,
+                text=response.text,
+            )
+
+        except requests.RequestException as exc:
+            return ApiResult(ok=False, status_code=None, data=None, text=str(exc))
+        
+    
