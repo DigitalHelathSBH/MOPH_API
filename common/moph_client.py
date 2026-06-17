@@ -150,6 +150,8 @@ class MophApiClient:
     def send_cancer_link_patient(self, payload: list[dict[str, Any]]) -> ApiResult:
         config = get_cancer_link_config()
         
+    def post_cancer_link_json(self, url: str, payload: list[dict[str, Any]]) -> ApiResult:
+        config = get_cancer_link_config()
 
         headers = {
             "Content-Type": "application/json; charset=UTF-8",
@@ -182,4 +184,3 @@ class MophApiClient:
         except requests.RequestException as exc:
             return ApiResult(ok=False, status_code=None, data=None, text=str(exc))
         
-    

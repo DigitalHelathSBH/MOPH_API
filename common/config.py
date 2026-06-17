@@ -49,6 +49,7 @@ class FdhConfig:
 class CancerLinkConfig:
     patient_url: str
     service_url: str
+    admission_url: str
     hospital_key: str
     secret_header_name: str
     secret_header_value: str
@@ -97,6 +98,7 @@ def get_cancer_link_config() -> CancerLinkConfig:
     return CancerLinkConfig(
         patient_url=os.getenv("CANCER_LINK_PATIENT_URL", ""),
         service_url=os.getenv("CANCER_LINK_SERVICE_URL", ""),
+        admission_url=os.getenv("CANCER_LINK_ADMISSION_URL", ""),
         hospital_key=os.getenv("CANCER_LINK_HOSPITAL_KEY", ""),
         secret_header_name=os.getenv("CANCER_LINK_SECRET_HEADER_NAME", ""),
         secret_header_value=os.getenv("CANCER_LINK_SECRET_HEADER_VALUE", ""),
